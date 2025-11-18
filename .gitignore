@@ -4,3 +4,4 @@ node_modules/
 dist/
 
 # .gitignore
+firebase-adminsdk.json
