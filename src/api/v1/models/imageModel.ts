@@ -1,7 +1,9 @@
-export interface PhotogenicManImage {
+export interface ImageDetails {
     id: string;
 
-    link: string;
+    route: string;
+
+    fileName: string;
 
     title: string;
 
