@@ -1,10 +1,11 @@
+import fs from 'fs';
+
 import * as firestoreRepository from "../repositories/firestoreRepository";
 import {
     QuerySnapshot,
     DocumentData,
     DocumentSnapshot,
 } from "firebase-admin/firestore";
-
 import { ImageDetails } from "../models/imageModel";
 
 export const storeImageDetails = async (
@@ -12,7 +13,7 @@ export const storeImageDetails = async (
 ): Promise<ImageDetails> => {
     try {
         const newImage: Partial<ImageDetails> = {
-            file: details.file,
+            route: details.route,
             title: details.title,
             description: details.description,
             eventId: details.eventId
@@ -101,7 +102,12 @@ export const deleteImageDetails = async (
 ): Promise<void> => {
     try {
         const image: ImageDetails = await getImageDetailsById(id);
-        
+
+        // Deletes image in local directory
+        fs.unlink(`uploads/${image.fileName}`, (err) => {
+            if (err) throw err;
+        });
+
         if (!image) {
             throw new Error(`Couldn't find image with ID:${id}`);
         }
@@ -126,7 +132,7 @@ export const getEventImages = async (
         }
 
         if (filteredImages.length === 0) {
-            throw new Error(`Event: ${eventId} has no images or doesn't exist`);
+            throw new Error(`Event with ID: ${eventId} has no images or doesn't exist`);
         }
 
         return filteredImages;
