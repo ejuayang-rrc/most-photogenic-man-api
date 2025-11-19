@@ -45,7 +45,7 @@ export const uploadImageFile = async (
 
         // NOTE: Change "req.host" to "req.hostname" when under a domain
         const route: string = `${req.protocol}://${req.host}/uploads/${req.file.filename}`;
-        const fileName: string = req.file.filename;
+        const fileName: string = `${req.file.filename}`;
         const { 
             title,
             description,
@@ -109,7 +109,7 @@ export const deleteImage = async (
     }
 };
 
-export const getAllImages = async (
+export const getImages = async (
     req: Request,
     res: Response,
     next: NextFunction

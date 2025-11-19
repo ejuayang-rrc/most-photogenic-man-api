@@ -14,6 +14,7 @@ export const storeImageDetails = async (
     try {
         const newImage: Partial<ImageDetails> = {
             route: details.route,
+            fileName: details.fileName,
             title: details.title,
             description: details.description,
             eventId: details.eventId
