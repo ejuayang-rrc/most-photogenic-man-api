@@ -1,5 +1,8 @@
 import express, { Express } from "express";
+import dotenv from "dotenv";
 import morgan from "morgan";
+
+dotenv.config();
 
 import imageRoutes from "../src/api/v1/routes/imageRoutes";
 import commentRoutes from "../src/api/v1/routes/commentRoutes";
