@@ -8,7 +8,7 @@ import {
 import { EventDetails } from "../models/eventModel";
 
 export const storeEventDetails = async (
-    details: Omit<EventDetails, "id">,
+    details: EventDetails,
 ): Promise<EventDetails> => {
     try {
         const newEvent: Partial<EventDetails> = {
@@ -17,10 +17,13 @@ export const storeEventDetails = async (
             date: details.date
         };
 
-        const id: string = 
-        await firestoreRepository.createDocument<EventDetails>("events", newEvent);
+        await firestoreRepository.createDocument<EventDetails>(
+            "events", 
+            newEvent, 
+            details.id
+        );
 
-        return structuredClone({ id: id, ...newEvent } as EventDetails);
+        return structuredClone({ id: details.id, ...newEvent } as EventDetails);
     } catch (error: unknown) {
         throw error;
     }
@@ -77,7 +80,11 @@ export const updateEventDetails = async (
         }
 
         const updatedEvent: Omit<EventDetails, "id"> = {
-            ...event,
+            ...{
+                name: event.name,
+                description: event.description,
+                date: event.date
+            } as Omit<EventDetails, "id">,
             ...eventData
         };
 

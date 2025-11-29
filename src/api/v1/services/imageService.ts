@@ -80,7 +80,13 @@ export const updateImageDetails = async (
         }
 
         const updatedImage: Omit<ImageDetails, "id"> = {
-            ...image,
+            ...{
+                route: image.route,
+                fileName: image.fileName,
+                title: image.title,
+                description: image.description,
+                eventId: image.eventId,
+            } as Omit<ImageDetails, "id">,
             ...imageData
         };
 

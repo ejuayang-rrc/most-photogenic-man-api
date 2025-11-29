@@ -1,12 +1,18 @@
 import express, { Express } from "express";
+import morgan from "morgan";
 
 import imageRoutes from "../src/api/v1/routes/imageRoutes";
+import commentRoutes from "../src/api/v1/routes/commentRoutes";
+import eventRoutes from "../src/api/v1/routes/eventRoutes";
 
 // Get environment variables
 require("dotenv").config();
 
 // Initialize Express application
 const app: Express = express();
+
+// Morgan for HTTP request logging
+app.use(morgan("combined"));
 
 // Ensures incoming body is correctly parsed to JSON
 app.use(express.json());
@@ -27,6 +33,8 @@ app.get("/api/v1/health", (req, res) => {
     });
 });
 
-app.use("/api/v1/image", imageRoutes)
+app.use("/api/v1/image", imageRoutes);
+app.use("/api/v1/event", eventRoutes);
+app.use("/api/v1/comment", commentRoutes);
 
 export default app;

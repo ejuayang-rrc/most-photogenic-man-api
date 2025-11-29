@@ -30,7 +30,7 @@ export const deleteComment = async (
     id: string
 ): Promise<void> => {
     try {
-        const doc: DocumentSnapshot | null = await firestoreRepository.getDocumentById("comment", id);
+        const doc: DocumentSnapshot | null = await firestoreRepository.getDocumentById("comments", id);
 
         if (!doc) {
             throw new Error(`Couldn't find comment with ID:${id}`);
@@ -46,7 +46,7 @@ export const deleteComment = async (
             throw new Error(`Couldn't find comment with ID:${id}`);
         }
 
-        await firestoreRepository.deleteDocument("comment", id);
+        await firestoreRepository.deleteDocument("comments", id);
     } catch (error: unknown) {
         throw error;
     }

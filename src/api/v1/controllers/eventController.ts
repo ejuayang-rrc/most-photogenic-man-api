@@ -5,13 +5,18 @@ import { HTTP_STATUS } from "../../../constants/httpConstants";
 import { EventDetails } from "../models/eventModel";
 import * as eventService from "../services/eventService";
 
-export const createEvent = async (
+export const storeEventDetails = async (
     req: Request,
     res: Response,
     next: NextFunction
 ): Promise<void> => {
     try {
-        if (!req.body.name) {
+        if (!req.body.id) {
+            res.status(HTTP_STATUS.BAD_REQUEST).json(
+                errorResponse("Event ID is required")
+            );
+            return; 
+        } else if (!req.body.name) {
             res.status(HTTP_STATUS.BAD_REQUEST).json(
                 errorResponse("Event Name is required")
             );
@@ -28,6 +33,7 @@ export const createEvent = async (
             return; 
         } else {
             const {
+                id,
                 name,
                 description,
                 date
@@ -39,6 +45,7 @@ export const createEvent = async (
 
             const newEvent: EventDetails = 
             await eventService.storeEventDetails({
+                id,
                 name,
                 description,
                 date: convertedDate
@@ -56,7 +63,7 @@ export const createEvent = async (
     }
 };
 
-export const getEventDetails = async (
+export const getAllEventDetails = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -82,7 +89,7 @@ export const getEventDetailsById = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-                const { id } = req.params;
+        const { id } = req.params;
 
         const event: EventDetails = 
         await eventService.getEventDetailsById(id);
@@ -129,7 +136,7 @@ export const deleteEventDetails = async (
     res: Response,
     next: NextFunction
 ): Promise<void> => {
-        try {
+    try {
         const id: string = req.params.id;
 
         await eventService.deleteEventDetails(id);
