@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
+import setupSwagger from "./config/swagger";
 
 dotenv.config();
 
@@ -26,6 +27,9 @@ app.use(validationMiddleware);
 
 // Serve uploaded files
 app.use("/uploads", express.static("uploads"));
+
+// Setup Swagger
+setupSwagger(app);
 
 /**
  * Health check route that returns server status details
