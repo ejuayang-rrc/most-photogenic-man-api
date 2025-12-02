@@ -1,0 +1,668 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Task Management API Documentation",
+    "version": "1.0.0",
+    "description": "This is the API documentation for the Task Management application."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "CommentDetails": {
+        "type": "object",
+        "required": [
+          "username",
+          "comment",
+          "imageId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The comment ID"
+          },
+          "username": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 100,
+            "description": "The commenter's username"
+          },
+          "comment": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 250,
+            "description": "The contents of the comment"
+          },
+          "imageId": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50,
+            "description": "The image ID identifying where the comment was posted"
+          }
+        }
+      },
+      "EventDetails": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "date"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 30,
+            "description": "The event's ID"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 100,
+            "description": "The name of the event"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 200,
+            "description": "A string describing the event"
+          },
+          "date": {
+            "type": "string",
+            "description": "The date the event took place",
+            "example": "January 27, 2002"
+          }
+        }
+      },
+      "ImageDetails": {
+        "type": "object",
+        "required": [
+          "title",
+          "description",
+          "eventId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The image's ID"
+          },
+          "route": {
+            "type": "string",
+            "description": "The URL route to the image's location"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "The image's local filename"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 100,
+            "description": "The image's title"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 250,
+            "description": "A string describing the image"
+          },
+          "eventId": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 250,
+            "description": "ID of the event the image is related to"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/comment": {
+      "post": {
+        "summary": "Post a new comment",
+        "tags": [
+          "CommentDetails"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "username",
+                  "comment",
+                  "imageId"
+                ],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 100,
+                    "description": "The commenter's username"
+                  },
+                  "comment": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 250,
+                    "description": "The contents of the comment"
+                  },
+                  "imageId": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 50,
+                    "description": "The image ID identifying where the comment was posted"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Comment posted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body input"
+          }
+        }
+      }
+    },
+    "/comment/{id}": {
+      "get": {
+        "summary": "Get all of an image's comments by image ID",
+        "tags": [
+          "CommentDetails"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The image ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comments found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Comments not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a comment by ID",
+        "tags": [
+          "CommentDetails"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The comment ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comment deleted successfully"
+          },
+          "404": {
+            "description": "Comment not found"
+          }
+        }
+      }
+    },
+    "/event": {
+      "post": {
+        "summary": "Create a new event",
+        "tags": [
+          "EventDetails"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "name",
+                  "description",
+                  "date"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 30,
+                    "description": "The event's ID"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 100,
+                    "description": "The name of the event"
+                  },
+                  "description": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 200,
+                    "description": "A string describing the event"
+                  },
+                  "date": {
+                    "type": "string",
+                    "description": "The date the event took place",
+                    "example": "January 27, 2002"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body input"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all events",
+        "tags": [
+          "EventDetails"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventDetails"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/event/{id}": {
+      "get": {
+        "summary": "Get an event by ID",
+        "tags": [
+          "EventDetails"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The event ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an event's name or description by ID",
+        "tags": [
+          "EventDetails"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The event ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 100,
+                    "description": "The name of the event"
+                  },
+                  "description": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 200,
+                    "description": "A string describing the event"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an event by ID",
+        "tags": [
+          "EventDetails"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The event ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event deleted successfully"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      }
+    },
+    "/image": {
+      "post": {
+        "summary": "Uploads an image and creates attributes",
+        "tags": [
+          "ImageDetails"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "image/png": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            },
+            "image/jpeg": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "description",
+                  "eventId"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 100,
+                    "description": "The image's title"
+                  },
+                  "description": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 250,
+                    "description": "A string describing the image"
+                  },
+                  "eventId": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 250,
+                    "description": "ID of the event the image is related to"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Image created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body input"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all images",
+        "tags": [
+          "ImageDetails"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of images",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageDetails"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/{id}": {
+      "get": {
+        "summary": "Get image by ID",
+        "tags": [
+          "ImageDetails"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The image ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An image and it's details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageDetails"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a image's title or description",
+        "tags": [
+          "ImageDetails"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The image ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 100,
+                    "description": "The image's title"
+                  },
+                  "description": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 250,
+                    "description": "A string describing the image"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Image details updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Image not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an image by ID",
+        "tags": [
+          "ImageDetails"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The image ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Image deleted successfully"
+          },
+          "404": {
+            "description": "Image not found"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
