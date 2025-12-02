@@ -16,14 +16,12 @@ router.post(
 router.get(
     "/", 
     authenticate,
-    isAuthorized({ hasRole: ["mod"] }),
     eventController.getAllEventDetails
 );
 
 router.get(
     "/:id", 
     authenticate,
-    isAuthorized({ hasRole: ["mod"] }),
     eventController.getEventDetailsById
 );
 

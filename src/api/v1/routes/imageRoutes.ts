@@ -18,14 +18,12 @@ router.post(
 router.get(
     "/", 
     authenticate,
-    isAuthorized({ hasRole: ["user"] }),
     imageController.getImages
 );
 
 router.get(
     "/:id", 
     authenticate,
-    isAuthorized({ hasRole: ["user"] }),
     imageController.getImageById
 );
 

@@ -16,7 +16,6 @@ router.post(
 router.get(
     "/:id", 
     authenticate,
-    isAuthorized({ hasRole: ["user"] }),
     commentController.getImageComments
 );
 
