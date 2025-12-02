@@ -4,10 +4,10 @@ const swaggerOptions: swaggerJsdoc.Options = {
     definition: {
         openapi: "3.0.0",
         info: {
-            title: "Task Management API Documentation",
+            title: "Most Photogenic Man API",
             version: "1.0.0",
             description:
-                "This is the API documentation for the Task Management application.",
+                "This is documentation for the Most Photogenic Man API.",
         },
         servers: [
             {
