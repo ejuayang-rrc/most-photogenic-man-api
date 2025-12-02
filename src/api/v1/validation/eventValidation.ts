@@ -21,7 +21,7 @@ export const eventSchema: Joi.ObjectSchema<EventDetails> = Joi.object<EventDetai
     .label('Description'),
 
     date: Joi.string()
-    .pattern(/(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(\d{1,2})\s+(\d{4})/)
+    .pattern(/^(January|February|March|April|May|June|July|August|September|October|November|December) (0?[1-9]|[12][0-9]|3[01]), (19|20)\d{2}$/)
     .required()
     .messages({
         'string.pattern.base': 'Date is an invalid format'
