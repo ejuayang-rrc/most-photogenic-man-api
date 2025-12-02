@@ -51,7 +51,7 @@ const router: Router = express.Router();
 router.post(
     "/", 
     authenticate,
-    isAuthorized({ hasRole: ["user"] }),
+    isAuthorized({ hasRole: ["user", "admin"] }),
     commentController.addComment
 );
 
@@ -106,7 +106,7 @@ router.get(
 router.delete(
     "/:id", 
     authenticate,
-    isAuthorized({ hasRole: ["mod"] }),
+    isAuthorized({ hasRole: ["mod", "admin"] }),
     commentController.deleteComment
 );
 

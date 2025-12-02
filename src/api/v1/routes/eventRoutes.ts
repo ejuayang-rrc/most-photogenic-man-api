@@ -56,7 +56,7 @@ const router: Router = express.Router();
 router.post(
     "/", 
     authenticate,
-    isAuthorized({ hasRole: ["mod"] }),
+    isAuthorized({ hasRole: ["mod", "admin"] }),
     eventController.storeEventDetails
 );
 
@@ -156,7 +156,7 @@ router.get(
 router.put(
     "/:id", 
     authenticate,
-    isAuthorized({ hasRole: ["mod"] }),
+    isAuthorized({ hasRole: ["mod", "admin"] }),
     eventController.updateEventDetails
 );
 
@@ -182,7 +182,7 @@ router.put(
 router.delete(
     "/:id", 
     authenticate,
-    isAuthorized({ hasRole: ["mod"] }),
+    isAuthorized({ hasRole: ["mod", "admin"] }),
     eventController.deleteEventDetails
 );
 

@@ -61,7 +61,7 @@ router.post(
     "/", 
     uploadImage, 
     authenticate,
-    isAuthorized({ hasRole: ["mod"] }),
+    isAuthorized({ hasRole: ["mod", "admin"] }),
     imageController.uploadImageFile 
 );
 
@@ -161,7 +161,7 @@ router.get(
 router.put(
     "/:id", 
     authenticate,
-    isAuthorized({ hasRole: ["mod"] }),
+    isAuthorized({ hasRole: ["mod", "admin"] }),
     imageController.updateImageDetails
 );
 
@@ -187,7 +187,7 @@ router.put(
 router.delete(
     "/:id", 
     authenticate,
-    isAuthorized({ hasRole: ["mod"] }),
+    isAuthorized({ hasRole: ["mod", "admin"] }),
     imageController.deleteImage
 );
 
