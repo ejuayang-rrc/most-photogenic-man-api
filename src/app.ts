@@ -4,17 +4,17 @@ import morgan from "morgan";
 
 dotenv.config();
 
+import errorHandler from "./api/v1/middleware/errorHandler";
 import imageRoutes from "../src/api/v1/routes/imageRoutes";
 import commentRoutes from "../src/api/v1/routes/commentRoutes";
 import eventRoutes from "../src/api/v1/routes/eventRoutes";
+import adminRoutes from "./api/v1/routes/adminRoutes";
+import userRoutes from "./api/v1/routes/userRoutes";
 
-// Get environment variables
 require("dotenv").config();
 
-// Initialize Express application
 const app: Express = express();
 
-// Morgan for HTTP request logging
 app.use(morgan("combined"));
 
 // Ensures incoming body is correctly parsed to JSON
@@ -39,5 +39,11 @@ app.get("/api/v1/health", (req, res) => {
 app.use("/api/v1/image", imageRoutes);
 app.use("/api/v1/event", eventRoutes);
 app.use("/api/v1/comment", commentRoutes);
+
+// For auth
+app.use("/api/v1/admin", adminRoutes);
+app.use("/api/v1/users", userRoutes);
+
+app.use(errorHandler)
 
 export default app;
