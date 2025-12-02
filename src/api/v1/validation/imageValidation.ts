@@ -8,9 +8,6 @@ import { ImageDetails } from "src/api/v1/models/imageModel";
  *     ImageDetails:
  *       type: object
  *       required:
- *         - id
- *         - route
- *         - fileName
  *         - title
  *         - description
  *         - eventId
@@ -67,9 +64,6 @@ export const imageSchema: Joi.ObjectSchema<ImageDetails> = Joi.object<ImageDetai
  *     ImageDetails:
  *       type: object
  *       required:
- *         - id
- *         - route
- *         - fileName
  *         - title
  *         - description
  *         - eventId

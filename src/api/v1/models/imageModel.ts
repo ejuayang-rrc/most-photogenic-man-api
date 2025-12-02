@@ -5,9 +5,6 @@
  *     ImageDetails:
  *       type: object
  *       required:
- *         - id
- *         - route
- *         - fileName
  *         - title
  *         - description
  *         - eventId

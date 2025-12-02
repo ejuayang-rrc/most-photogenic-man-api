@@ -16,6 +16,14 @@ const router: Router = express.Router();
  *     requestBody:
  *       required: true
  *       content:
+ *         image/png:
+ *           schema:
+ *             type: string
+ *             format: binary
+ *         image/jpeg:
+ *           schema:
+ *             type: string
+ *             format: binary
  *         application/json:
  *           schema:
  *             type: object
@@ -81,9 +89,9 @@ router.get(
 
 /**
  * @openapi
- * /image:
+ * /image/{id}:
  *   get:
- *     summary: Get all images
+ *     summary: Get image by ID
  *     tags: [ImageDetails]
 *     parameters:
  *       - in: path
@@ -94,7 +102,7 @@ router.get(
  *         description: The image ID
  *     responses:
  *       '200':
- *         description: List of images
+ *         description: An image and it's details
  *         content:
  *           application/json:
  *             schema:
@@ -113,7 +121,7 @@ router.get(
  * /image/{id}:
  *   put:
  *     summary: Update a image's title or description
- *     tags: [images]
+ *     tags: [ImageDetails]
  *     parameters:
  *       - in: path
  *         name: id

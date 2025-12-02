@@ -27,7 +27,7 @@
  *           description: A string describing the event
  *         date:
  *           type: string
- *           description: The date the event took place. Format: <Full Month Name> <Day>, <Year>
+ *           description: The date the event took place
  *           example: "January 27, 2002"
  */
 export interface EventDetails {
