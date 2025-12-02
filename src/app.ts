@@ -10,6 +10,7 @@ import commentRoutes from "../src/api/v1/routes/commentRoutes";
 import eventRoutes from "../src/api/v1/routes/eventRoutes";
 import adminRoutes from "./api/v1/routes/adminRoutes";
 import userRoutes from "./api/v1/routes/userRoutes";
+import { validationMiddleware } from "./api/v1/middleware/validation";
 
 require("dotenv").config();
 
@@ -19,6 +20,9 @@ app.use(morgan("combined"));
 
 // Ensures incoming body is correctly parsed to JSON
 app.use(express.json());
+
+// Use validation middleware
+app.use(validationMiddleware);
 
 // Serve uploaded files
 app.use("/uploads", express.static("uploads"));
